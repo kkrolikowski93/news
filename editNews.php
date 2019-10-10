@@ -12,11 +12,11 @@ if (isset($_GET['id'])) {
 
     if (!$singleNews) {
         echo 'Cannot find article';
-        die();
+        exit();
     } else {
         if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] != $singleNews['author_id']) {
             echo 'You are not allowed for this operation';
-            die();
+            exit();
         }
          if (isset($_POST['name']) && isset($_POST['description'])) {
             $name = $_POST['name'];
@@ -56,11 +56,11 @@ if (isset($_GET['id'])) {
     <input type="text" id="name" name="name" value="<?= $singleNews['name'] ?>"/>
 
     <label for="description">News description</label>
-    <input type="text" id="description"  class="description" name="description" value="<?= $singleNews['description'] ?>"/>
+    <textarea id="description"  class="description" name="description"><?= $singleNews['description'] ?></textarea>
 
     <label for="checkbox">Publish news</label>
     <label class="switch">
-        <input type="checkbox" <?= $singleNews['is_active'] ? 'checked' : '' ?> value=<?= $singleNews['is_active']?> name="publish">
+        <input type="checkbox" <?= isset($_POST['publish']) ? 'checked' : '' ?> <?= $singleNews['is_active'] ? 'checked' : '' ?> value="<?= $singleNews['is_active']?>" name="publish">
         <span class="slider round"></span>
     </label>
 
