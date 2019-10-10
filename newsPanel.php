@@ -33,30 +33,38 @@ if (!isset($_SESSION['user_id'])) {
     crossorigin="anonymous">
 </script>
 <div class="background">
-    Dupa
 </div>
+
 <div class="container">
-    <?php if ($newsList): ?>
-        <?php foreach ($newsList as $singleNews) : ?>
-                <div class="post">
-                    <div class="main">
-                        <div class="news-header">
-                            <p>Created at: <?= $singleNews['created_at'] ?></p>
-                            <p>Last modified: <?= $singleNews['updated_at'] ?></p>
-                            <p>Author: <?= $singleNews['first_name'] . ' ' . $singleNews['last_name'] ?></p>
-                        </div>
-                        <h2><?= $singleNews['name']; ?></h2>
-                        <h4><?= $singleNews['description']; ?></h4>
-                        <br/>
-                    </div>
-                        <div class="remove_or_edit">
-                            <a class="fa fa-pencil-square-o" href="editNews.php?id=<?= $singleNews['id'] ?>"
-                               aria-hidden="true"></a>
-                            <a class="fa fa-trash" id="<?= $singleNews['id'] ?>" aria-hidden="true"></a>
-                        </div>
+            <div class="row">
+                <div>
+                    <a class="submit" id="add-news" href="addNews.php">Add news</a>
                 </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
+                <?php if ($newsList): ?>
+                    <?php foreach ($newsList as $singleNews) : ?>
+                        <?php if (isset($_SESSION['user_id']) && $singleNews['author_id'] == $_SESSION['user_id'])  : ?>
+                            <div class="card">
+                                <div class="left-column">
+                                    <div class="news-header">
+                                        <p>Created at: <?= $singleNews['created_at'] ?></p>
+                                        <p>Last modified: <?= $singleNews['updated_at'] ?></p>
+                                        <p>Author: <?= $singleNews['first_name'] . ' ' . $singleNews['last_name'] ?></p>
+                                    </div>
+                                    <div class="news-content">
+                                        <h2><?= $singleNews['name']; ?></h2>
+                                        <p><?= $singleNews['description']; ?></p>
+                                        <br/>
+                                    </div>
+                                </div>
+                                <div class="remove_or_edit">
+                                    <a class="fa fa-pencil-square-o" href="editNews.php?id=<?= $singleNews['id'] ?>"
+                                       aria-hidden="true"></a>
+                                    <a class="fa fa-trash" id="<?= $singleNews['id'] ?>" aria-hidden="true"></a>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
 </div>
 <script type="text/javascript">
     $('.fa-trash').click(function () {
@@ -69,10 +77,10 @@ if (!isset($_SESSION['user_id'])) {
                 },
                 url: "index.php",
                 success: function (json) {
-                    button.closest('.post').remove();
+                    button.closest('.card').remove();
                 },
                 error: function (response) {
-                    console.log('elooo');
+                    alert('This news cannot be removed');
                 }
             })
         }
