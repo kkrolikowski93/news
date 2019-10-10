@@ -13,7 +13,7 @@ class News
         if (!$this->db) {
             echo "Error: Could not connect to database.";
             echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
-            die();
+            exit();
         }
     }
 
@@ -84,7 +84,7 @@ class News
     public function editNews($id, $name, $description, $publish)
     {
         $date = (new \DateTime())->format('Y:m:d H:i:s');
-        $sql = "UPDATE news SET name = '$name', description = '$description', updated_at = '$date' WHERE id = '$id'";
+        $sql = "UPDATE news SET name = '$name', description = '$description', updated_at = '$date', is_active = '$publish' WHERE id = '$id'";
 
         $result = $this->db->query($sql);
         return $result;
