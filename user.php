@@ -13,7 +13,7 @@ class User
         if (!$this->db) {
             echo "Error: Could not connect to database.";
             echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
-            die();
+            exit();
         }
     }
 
@@ -27,7 +27,7 @@ class User
     {
         $password = sha1($password);
 
-        $sql = "SELECT * FROM users WHERE email='$email' AND password='$password'";
+        $sql = "SELECT * FROM users WHERE email='$email'";
 
         $date = (new \DateTime())->format('Y-m-d H:i:s');
 
