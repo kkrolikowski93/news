@@ -9,7 +9,7 @@ $news = new News();
         if (!isset($_SESSION['user_id'])) {
             echo 'You are not allowed for this operation';
             echo '<button class="button">Back</button>';
-            die();
+            exit();
         }
         if (isset($_POST['name']) && isset($_POST['description'])) {
             $name = $_POST['name'];
@@ -19,9 +19,8 @@ $news = new News();
             $addNews = $news->addNews($name, $description, $published);
 
             if ($addNews) {
-                echo 'News successfully added';
-                echo '<a href="index.php" class="button">Back</a>';
-                die();
+                header('Location: newsPanel.php');
+                exit();
 
             }
             else {
@@ -46,16 +45,17 @@ $news = new News();
 </script>
 <form action="" method="post" name="edit">
     <label for="name">News name</label>
-    <input type="text" id="name" name="name" value=""/>
+    <input type="text" id="name" required name="name" value=""/>
 
     <label for="description">News description</label>
-    <input type="text" id="description"  class="description" name="description" value=""/>
-
+    <p>
+    <textarea id="description"  class="description" required name="description"></textarea>
+    </p>
     <label for="checkbox">Publish news</label>
     <label class="switch">
         <input type="checkbox" name="publish" value=0>
         <span class="slider round"></span>
     </label>
 
-    <input onclick="saveNews()" type="submit" name="save" value="Save"/>
+    <input class="submit" type="submit" name="save" value="Save"/>
 </form>
