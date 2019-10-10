@@ -1,5 +1,6 @@
 <?php
 session_start();
+include('nav.php');
 include_once 'user.php';
 $user = new User();
 
@@ -8,49 +9,31 @@ if (isset($_SESSION['user_id'])) {
     exit();
 }
 if (isset($_POST['email']) && isset($_POST['password']) && isset($_POST['gender'])
-&& isset($_POST['first_name']) && isset($_POST['last_name'])){
-
+&& isset($_POST['first_name']) && isset($_POST['last_name']) && isset($_POST['password_2'])){
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $password2 = $_POST['password_2'];
     $gender = $_POST['gender'];
     $firstName = $_POST['first_name'];
     $lastName = $_POST['last_name'];
-
-
     $register = $user->userRegister($firstName, $lastName, $email, $gender, $password);
-    if ($register) {
-        // Registration Success
-        echo 'Registration successful <a href="login.php">Click here</a> to login';
+
+    if ($password !== $password2) {
+        echo 'Passwords don\'t match';
     } else {
-        // Registration Failed
-        echo 'Registration failed. Email or Username already exits please try again';
+        if ($register) {
+            echo 'Registration successful <a href="login.php">Click here</a> to login';
+            exit();
+        } else {
+            // Registration Failed
+            echo 'Registration failed. Email exists';
+        }
     }
 }
 ?>
 <head>
     <link rel="stylesheet" href="style.css">
 </head>
-<script type="text/javascript" language="javascript">
-    function submitreg() {
-        var form = document.reg;
-        if(form.name.value == ""){
-            alert( "Enter name." );
-            return false;
-        }
-        else if(form.uname.value == ""){
-            alert( "Enter username." );
-            return false;
-        }
-        else if(form.upass.value == ""){
-            alert( "Enter password." );
-            return false;
-        }
-        else if(form.uemail.value == ""){
-            alert( "Enter email." );
-            return false;
-        }
-    }
-</script>
 <div id="container">
     <h1>Registration Here</h1>
     <form action="" method="post" name="reg">
@@ -66,9 +49,13 @@ if (isset($_POST['email']) && isset($_POST['password']) && isset($_POST['gender'
         <label for="gender">Gender</label><br />
         <label><input type="radio" name="gender" value="boy" required= />Boy</label><br />
         <label><input type="radio" name="gender" value="girl" required />Girl</label><br />
+        <br/>
 
         <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="Enter your password"/>
-        <input onclick="return(submitlogin());" type="submit" class="submit" name="submit" value="Register"/>
+        <input type="password" id="password" name="password" required placeholder="Enter your password"/>
+
+        <label for="password+2">Repeat password</label>
+        <input type="password" id="password_2" name="password_2" required placeholder="Enter your password"/>
+        <input type="submit" class="submit" name="submit" value="Register"/>
     </form></div>
 
