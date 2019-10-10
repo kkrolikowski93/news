@@ -35,6 +35,24 @@ class News
 
     }
 
+    public function showUserNews()
+    {
+        $sql = "SELECT news.*, users.first_name, users.last_name FROM news, users WHERE news.author_id =".$_SESSION['user_id']." AND news.author_id = users.id ORDER BY news.created_at DESC";
+
+        $result = $this->db->query($sql);
+
+        if ($result) {
+            $output = array();
+            while ($row = $result->fetch_array()) {
+                $output[] = $row;
+            }
+            return $output;
+        } else {
+            return false;
+        }
+
+    }
+
     public function showSingleNews($id)
     {
         $sql = "SELECT news.*, users.first_name, users.last_name FROM news, users WHERE news.id = '$id' AND news.author_id = users.id";
