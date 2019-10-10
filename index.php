@@ -39,31 +39,25 @@ if (isset($_POST['idToRemove'])) {
         crossorigin="anonymous">
 </script>
 <div class="background">
-    Dupa
 </div>
-<div class="container">
+<div class="row">
     <?php if ($newsList): ?>
         <?php foreach ($newsList as $singleNews) : ?>
-            <?php if ($singleNews['is_active'] || (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $singleNews['author_id'])) : ?>
-                <div class="post">
-                    <div class="main">
+            <?php if ($singleNews['is_active']) : ?>
+            <div class="card">
+                    <div class="left-column">
                         <div class="news-header">
                             <p>Created at: <?= $singleNews['created_at'] ?></p>
                             <p>Last modified: <?= $singleNews['updated_at'] ?></p>
                             <p>Author: <?= $singleNews['first_name'] . ' ' . $singleNews['last_name'] ?></p>
                         </div>
-                        <h2><?= $singleNews['name']; ?></h2>
-                        <h4><?= $singleNews['description']; ?></h4>
-                        <br/>
-                    </div>
-                    <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $singleNews['author_id']) : ?>
-                        <div class="remove_or_edit">
-                            <a class="fa fa-pencil-square-o" href="editNews.php?id=<?= $singleNews['id'] ?>"
-                               aria-hidden="true"></a>
-                            <a class="fa fa-trash" id="<?= $singleNews['id'] ?>" aria-hidden="true"></a>
+                        <div class="news-content">
+                            <h2><?= $singleNews['name']; ?></h2>
+                            <p><?= $singleNews['description']; ?></p>
+                            <br/>
                         </div>
-                    <?php endif; ?>
                 </div>
+            </div>
             <?php endif; ?>
         <?php endforeach; ?>
     <?php endif; ?>
